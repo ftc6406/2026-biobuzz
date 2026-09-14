@@ -1,0 +1,404 @@
+package org.firstinspires.ftc.teamcode.hardwaresystems;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+/**
+ * A system of four mecanum wheels, each controlled separately by their own
+ * motor.
+ * <p>
+ * Mecanum wheels are capable of moving in any direction, whether horizontally,
+ * vertically, or diagonally.
+ */
+@SuppressWarnings("unused")
+public class MecanumWheels extends Wheels {
+    /**
+     * Builder to simplify the construction of {@link MecanumWheels} objects.
+     * <p>
+     * <h1>Example</h1>
+     * <pre>
+     * {@code
+     * MecanumWheels mecanumWheels =
+     *      new MecanumWheels.Builder()
+     *                       .setFrontLeftMotor(frontLeftMotor)
+     *                       .setFrontRightMotor(frontRightMotor)
+     *                       .setBackLeftMotor(backLeftMotor)
+     *                       .setBackRightMotor(backRightMotor)
+     *                       .setLateralDistance(36.0)
+     *                       .setLongitudinalDistance(36.0)
+     *                       .build()
+     * }
+     * </pre>
+     */
+    public static class Builder extends Wheels.Builder {
+        /**
+         * The {@link DcMotor}s powering the front left wheel.
+         */
+        protected DcMotor frontLeftMotor;
+        /**
+         * The {@link DcMotor}s powering the front right wheel.
+         */
+        protected DcMotor frontRightMotor;
+        /**
+         * The {@link DcMotor}s powering the back left wheel.
+         */
+        protected DcMotor backLeftMotor;
+        /**
+         * The {@link DcMotor}s powering the back right wheel.
+         */
+        protected DcMotor backRightMotor;
+
+        /**
+         * Instantiate a new {@link FoldingArm.Builder} with all parameters set
+         * to their default value.
+         */
+        public Builder() {
+            super();
+
+            frontLeftMotor = null;
+            frontRightMotor = null;
+            backLeftMotor = null;
+            backRightMotor = null;
+        }
+
+        /**
+         * Set the motor that controls the front-left mecanum wheel.
+         *
+         * @param frontLeftMotor The front-left mecanum wheel.
+         * @return This {@link Builder} so that setters can be chained.
+         */
+        @SuppressWarnings("UnusedReturnValue")
+        public Builder setFrontLeftMotor(DcMotor frontLeftMotor) {
+            this.frontLeftMotor = frontLeftMotor;
+            return this;
+        }
+
+        /**
+         * Set the motor that controls the front-right mecanum wheel.
+         *
+         * @param frontRightMotor The front-right mecanum wheel.
+         * @return This {@link Builder} so that setters can be chained.
+         */
+        @SuppressWarnings("UnusedReturnValue")
+        public Builder setFrontRightMotor(DcMotor frontRightMotor) {
+            this.frontRightMotor = frontRightMotor;
+            return this;
+        }
+
+        /**
+         * Set the motor that controls the back-right mecanum wheel.
+         *
+         * @param backLeftMotor The back-right mecanum wheel.
+         * @return This {@link Builder} so that setters can be chained.
+         */
+        @SuppressWarnings("UnusedReturnValue")
+        public Builder setBackLeftMotor(DcMotor backLeftMotor) {
+            this.backLeftMotor = backLeftMotor;
+            return this;
+        }
+
+        /**
+         * Set the motor that controls the back-right mecanum wheel.
+         *
+         * @param backRightMotor The back-right mecanum wheel.
+         * @return This {@link Builder} so that setters can be chained.
+         */
+        @SuppressWarnings("UnusedReturnValue")
+        public Builder setBackRightMotor(DcMotor backRightMotor) {
+            this.backRightMotor = backRightMotor;
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Builder setLateralWheelDistance(double lateralWheelDistance) {
+            this.lateralWheelDistance = lateralWheelDistance;
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Builder setLongitudinalWheelDistance(double longitudinalWheelDistance) {
+            this.longitudinalWheelDistance = longitudinalWheelDistance;
+            return this;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Builder setTicksPerInch(double ticksPerInch) {
+            super.setTicksPerInch(ticksPerInch);
+            return this;
+        }
+
+        @Override
+        public boolean isValid() {
+            return super.isValid()
+                   && frontLeftMotor != null
+                   && frontRightMotor != null
+                   && backLeftMotor != null
+                   && backRightMotor != null;
+        }
+
+        /**
+         * Using the given motors, wheel distances, and {@link #ticksPerInch},
+         * construct a new instance of {@link MecanumWheels}.
+         *
+         * @return A new instance of {@link MecanumWheels} if the values are
+         * valid.
+         * <p>
+         * Else, {@code null}.
+         */
+        @Override
+        public MecanumWheels build() {
+            return isValid() ? new MecanumWheels(this) : null;
+        }
+    }
+
+    /**
+     * The motor powering the front left wheel.
+     */
+    protected final DcMotor FRONT_LEFT_MOTOR;
+    /**
+     * The motor powering the front right wheel.
+     */
+    protected final DcMotor FRONT_RIGHT_MOTOR;
+    /**
+     * The motor powering the back left wheel.
+     */
+    protected final DcMotor BACK_LEFT_MOTOR;
+    /**
+     * The motor powering the back right wheel.
+     */
+    protected final DcMotor BACK_RIGHT_MOTOR;
+
+    /**
+     * Instantiate a new {@link MecanumWheels} object with the motors,
+     * distances, and ticks per inch all set.
+     *
+     * @param builder The {@link Builder} that contains the necessary values.
+     * @throws IllegalArgumentException If {@code builder} is not valid as
+     *                                  defined by {@link Builder#isValid()}.
+     */
+    protected MecanumWheels(Builder builder) throws IllegalArgumentException {
+        super(builder);
+
+        if (!builder.isValid()) {
+            throw new IllegalArgumentException(
+                "MecanumWheels builder is invalid");
+        }
+
+        FRONT_LEFT_MOTOR = builder.frontLeftMotor;
+        FRONT_RIGHT_MOTOR = builder.frontRightMotor;
+        BACK_LEFT_MOTOR = builder.backLeftMotor;
+        BACK_RIGHT_MOTOR = builder.backRightMotor;
+
+        /*
+         * Set the directions of the motors.
+         * The right and left motors run in opposite directions of each other.
+         * Positive is forward for all motors.
+         *
+         * In some cases, it may be necessary to reverse the signs.
+         */
+        FRONT_LEFT_MOTOR.setDirection(DcMotorSimple.Direction.REVERSE);
+        FRONT_RIGHT_MOTOR.setDirection(DcMotorSimple.Direction.FORWARD);
+        BACK_LEFT_MOTOR.setDirection(DcMotorSimple.Direction.REVERSE);
+        BACK_RIGHT_MOTOR.setDirection(DcMotorSimple.Direction.FORWARD);
+    }
+
+    /**
+     * {@return the motor that drives the front-left mecanum wheel}
+     */
+    public DcMotor getFrontLeftMotor() {
+        return FRONT_LEFT_MOTOR;
+    }
+
+    /**
+     * {@return the motor that drives the front-right mecanum wheel}
+     */
+    public DcMotor getFrontRightMotor() {
+        return FRONT_RIGHT_MOTOR;
+    }
+
+    /**
+     * {@return the motor that drives the back-left mecanum wheel}
+     */
+    public DcMotor getBackLeftMotor() {
+        return BACK_LEFT_MOTOR;
+    }
+
+    /**
+     * {@return the motor that drives the back-right mecanum wheel}
+     */
+    public DcMotor getBackRightMotor() {
+        return BACK_RIGHT_MOTOR;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void drive(double xPower, double yPower, double thetaPower) {
+        for (DcMotor motor : MOTORS) {
+            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+
+        /*
+         * The code below should be correct. If for some reason the robot is
+         * moving in the wrong direction, reverse
+         * the direction of the motors in {@link MecanumWheels#MecanumWheels
+         * (MotorSet, WheelDistances, ticksPerInch)}.
+         *
+         * As a last resort, try
+         * ```
+         * double frontLeftPower = -thetaPower + xPower + yPower;
+         * double frontRightPower = thetaPower + xPower + yPower;
+         * double backLeftPower = -thetaPower - xPower + yPower;
+         * double backRightPower = thetaPower - xPower + yPower;
+         * ```
+         * It worked in a previous season, but it probably is not a good idea.
+         */
+        double frontLeftPower = yPower + xPower + thetaPower;
+        double frontRightPower = yPower - xPower - thetaPower;
+        double backLeftPower = yPower - xPower + thetaPower;
+        double backRightPower = yPower + xPower - thetaPower;
+
+        // Scale the motor powers to be within +/- 1.0.
+        // Use the absolute maximum magnitude rather than the algebraic maximum
+        // to ensure all motors are scaled properly.
+        // For example, a power set of [-0.8, 0.2, 0.5, 0.4] should be scaled
+        // by 0.8, not 0.5.
+        double maxMagnitude = Math.max(
+            Math.max(
+                Math.abs(frontLeftPower),
+                Math.abs(frontRightPower)
+            ),
+            Math.max(
+                Math.abs(backLeftPower),
+                Math.abs(backRightPower)
+            )
+        );
+        if (maxMagnitude > MAX_MOTOR_POWER) {
+            frontLeftPower /= maxMagnitude;
+            frontRightPower /= maxMagnitude;
+            backLeftPower /= maxMagnitude;
+            backRightPower /= maxMagnitude;
+        }
+
+        FRONT_LEFT_MOTOR.setPower(frontLeftPower);
+        FRONT_RIGHT_MOTOR.setPower(frontRightPower);
+        BACK_LEFT_MOTOR.setPower(backLeftPower);
+        BACK_RIGHT_MOTOR.setPower(backRightPower);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void driveDistance(double forwardDistance) {
+        driveDistance(0, forwardDistance);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <strong><i>THIS METHOD IS STILL EXPERIMENTAL!</i></strong>
+     */
+    @Override
+    public void driveDistance(double sidewaysDistance, double forwardDistance) {
+        /*
+         * Apply Pythagorean's Theorem to find the Euclidean distance. Use
+         * Math.hypot() to avoid overflow.
+         */
+        double totalDistance = Math.hypot(forwardDistance, sidewaysDistance);
+
+        // If both distances are zero there is nothing to do.
+        // Guard against division by zero in the scaling logic below and halt
+        // the drive.
+        if (totalDistance == 0) {
+            // Set all motor powers to zero to stop the robot cleanly.
+            drive(0);
+            return;
+        }
+
+        // Scale the motor power based on trigonometry. Multiply by
+        // `MOTOR_POWER` after normalizing by the total distance so that
+        // larger requested distances do not inadvertently increase motor power.
+        double xPower = (sidewaysDistance / totalDistance) * MAX_MOTOR_POWER;
+        double yPower = (forwardDistance / totalDistance) * MAX_MOTOR_POWER;
+        drive(xPower, yPower, 0);
+
+        int frontLeftTickPosition =
+            FRONT_LEFT_MOTOR.getCurrentPosition() + (int) (
+                (sidewaysDistance - forwardDistance) * TICKS_PER_INCH
+            );
+        int frontRightTickPosition =
+            FRONT_RIGHT_MOTOR.getCurrentPosition() - (int) (
+                (-sidewaysDistance + forwardDistance) * TICKS_PER_INCH
+            );
+        int backLeftTickPosition =
+            BACK_LEFT_MOTOR.getCurrentPosition() + (int) (
+                (-sidewaysDistance - forwardDistance) * TICKS_PER_INCH
+            );
+        int backRightTickPosition =
+            BACK_RIGHT_MOTOR.getCurrentPosition() - (int) (
+                (sidewaysDistance + forwardDistance) * TICKS_PER_INCH
+            );
+
+        FRONT_LEFT_MOTOR.setTargetPosition(frontLeftTickPosition);
+        FRONT_RIGHT_MOTOR.setTargetPosition(frontRightTickPosition);
+        BACK_LEFT_MOTOR.setTargetPosition(backLeftTickPosition);
+        BACK_RIGHT_MOTOR.setTargetPosition(backRightTickPosition);
+
+        for (DcMotor motor : MOTORS) {
+            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void turn(double degrees) {
+        // The diameter of the circle that the wheels make when rotating 360
+        // degrees.
+        double diameter = Math.sqrt(
+            Math.pow(LATERAL_DISTANCE, 2)
+            + Math.pow(LONGITUDINAL_DISTANCE, 2)
+        );
+        double circumference = diameter * Math.PI;
+
+        // How far the wheels have to move.
+        double arcLength = (degrees / 360.0) * circumference;
+        int ticks = (int) Math.round(arcLength * TICKS_PER_INCH) * 4 / 3;
+
+        // Left wheels
+        FRONT_LEFT_MOTOR.setTargetPosition(
+            FRONT_LEFT_MOTOR.getCurrentPosition() - ticks
+        );
+        FRONT_LEFT_MOTOR.setPower(-MAX_MOTOR_POWER);
+        BACK_LEFT_MOTOR.setTargetPosition(
+            BACK_LEFT_MOTOR.getCurrentPosition() - ticks
+        );
+        BACK_LEFT_MOTOR.setPower(-MAX_MOTOR_POWER);
+
+        // Right wheels
+        FRONT_RIGHT_MOTOR.setTargetPosition(
+            FRONT_RIGHT_MOTOR.getCurrentPosition() + ticks
+        );
+        FRONT_RIGHT_MOTOR.setPower(MAX_MOTOR_POWER);
+        BACK_RIGHT_MOTOR.setTargetPosition(
+            BACK_RIGHT_MOTOR.getCurrentPosition() + ticks
+        );
+        BACK_RIGHT_MOTOR.setPower(MAX_MOTOR_POWER);
+
+        for (DcMotor motor : MOTORS) {
+            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+    }
+}
