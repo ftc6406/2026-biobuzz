@@ -28,6 +28,7 @@ public class DriverMode extends CustomLinearOp {
      *  sensitivity.
      */
     private static final double DRIVING_SENSITIVITY = 1.0;
+
     /**
      * Minimum joystick magnitude required to register movement. Inputs below
      * this threshold will be treated as zero. This helps prevent unintended
@@ -45,6 +46,7 @@ public class DriverMode extends CustomLinearOp {
      * drift does not cause the robot to creep when released.
      */
     private double verticalOffset = 0.0;
+
     /**
      * Measured resting offsets for the driver controls. These values are
      * sampled during the init phase (before the match begins) while the driver
@@ -53,6 +55,7 @@ public class DriverMode extends CustomLinearOp {
      * drift does not cause the robot to creep when released.
      */
     private double horizontalOffset = 0.0;
+
     /**
      * Measured resting offsets for the driver controls. These values are
      * sampled during the init phase (before the match begins) while the driver
@@ -67,6 +70,7 @@ public class DriverMode extends CustomLinearOp {
      * off by default.
      */
     private boolean cameraStreamEnabled = true;
+
     /**
      * Check whether the camera is already on or off so that it is not
      * mistakenly opened or closed multiple times.
@@ -117,6 +121,7 @@ public class DriverMode extends CustomLinearOp {
         double horizontalSum = 0.0;
         double pivotSum = 0.0;
         int samples;
+
         for (
             samples = 0;
             !isStopRequested() && System.currentTimeMillis() < sampleEnd;
@@ -132,18 +137,22 @@ public class DriverMode extends CustomLinearOp {
             pivotSum += gamepad1.left_stick_x;
             sleep(10);
         }
+
         if (samples > 0) {
             verticalOffset = verticalSum / samples;
             horizontalOffset = horizontalSum / samples;
             pivotOffset = pivotSum / samples;
         }
+
         telemetry.addData(
             "Control offsets", "V=%.2f H=%.2f P=%.2f",
             verticalOffset,
             horizontalOffset,
             pivotOffset
         );
+
         telemetry.update();
+
     }
 
     /**
@@ -206,6 +215,7 @@ public class DriverMode extends CustomLinearOp {
             correctedHorizontal,
             rawHorizontal
         );
+
         telemetry.addData(
             "Vertical/corrected/raw",
             "%5.2f/%5.2f/%5.2f",
@@ -213,6 +223,7 @@ public class DriverMode extends CustomLinearOp {
             correctedVertical,
             rawVertical
         );
+
         telemetry.addData(
             "Pivot/corrected/raw",
             "%5.2f/%5.2f/%5.2f",
@@ -222,26 +233,33 @@ public class DriverMode extends CustomLinearOp {
         );
 
         return new ControlInput(horizontal, vertical, pivot);
+
     }
 
     @Override
     public void runOpMode() {
         super.runOpMode();
+
         if (cameraStreamEnabled) {
-            FtcDashboard.getInstance()
-                        .startCameraStream(WEBCAM.getVisionPortal(), 0);
+            FtcDashboard.getInstance().startCameraStream(WEBCAM.getVisionPortal(), 0);
+
         }
 
         boolean toggleBtn = gamepad2.dpad_up;
+
         if (toggleBtn && !lastToggleBtn) {
             cameraStreamEnabled = !cameraStreamEnabled;
+
             if (cameraStreamEnabled) {
-                FtcDashboard.getInstance()
-                            .startCameraStream(WEBCAM.getVisionPortal(), 0);
+                FtcDashboard.getInstance().startCameraStream(WEBCAM.getVisionPortal(), 0);
+
             } else {
                 FtcDashboard.getInstance().stopCameraStream();
+
             }
+
         }
+
         lastToggleBtn = toggleBtn;
 
         calibrateOffsets();
@@ -249,9 +267,11 @@ public class DriverMode extends CustomLinearOp {
         while (opModeIsActive()) {
             try {
                 runLoop();
+
             } catch (Exception exception) {
                 telemetry.addLine("\nWARNING AN ERROR OCCURRED!!!");
                 telemetry.addLine(exception.getMessage());
+
             }
         }
     }
@@ -279,7 +299,8 @@ public class DriverMode extends CustomLinearOp {
          */
         if (result.vertical == 0.0
             && result.horizontal == 0.0
-            && result.pivot == 0.0) {
+            && result.pivot == 0.0
+        ) {
             if (WHEELS != null) {
                 WHEELS.drive(0);
 
@@ -308,10 +329,13 @@ public class DriverMode extends CustomLinearOp {
                     new Vector2d(result.horizontal, result.vertical),
                     result.pivot
                 );
+
                 MECANUM_DRIVE.setDrivePowers(velocity);
+
             }
         }
 
         telemetry.update();
+
     }
 }

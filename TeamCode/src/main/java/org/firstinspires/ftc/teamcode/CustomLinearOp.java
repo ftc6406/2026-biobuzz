@@ -210,6 +210,16 @@ public class CustomLinearOp extends LinearOpMode {
          * inch are approximate; tune them for your specific robot.
          */
         try {
+
+            // Stick to a single well established naming convention to avoid looping through the hardware map
+
+            DcMotor frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
+            DcMotor frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
+            DcMotor backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
+            DcMotor backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
+
+
+//            ORIGINAL CODE FROM TEMPLATE
             /*
              * Acquire each of the four drive motors. To be tolerant of
              * different naming conventions in the Robot Controller config,
@@ -217,34 +227,35 @@ public class CustomLinearOp extends LinearOpMode {
              * Update the candidate lists if your team uses different
              * names (for example, "frontLeft", "lf", "leftFront", etc.).
              */
-            DcMotor frontLeftMotor = pickMotor(
-                "frontLeftWheel",
-                "frontLeftMotor",
-                "frontLeft",
-                "lf",
-                "leftFront"
-            );
-            DcMotor frontRightMotor = pickMotor(
-                "frontRightWheel",
-                "frontRightMotor",
-                "frontRight",
-                "rf",
-                "rightFront"
-            );
-            DcMotor backLeftMotor = pickMotor(
-                "backLeftWheel",
-                "backLeftMotor",
-                "backLeft",
-                "lb",
-                "leftBack"
-            );
-            DcMotor backRightMotor = pickMotor(
-                "backRightWheel",
-                "backRightMotor",
-                "backRight",
-                "rb",
-                "rightBack"
-            );
+
+//            DcMotor frontLeftMotor = pickMotor(
+//                "frontLeftWheel",
+//                "frontLeftMotor",
+//                "frontLeft",
+//                "lf",
+//                "leftFront"
+//            );
+//            DcMotor frontRightMotor = pickMotor(
+//                "frontRightWheel",
+//                "frontRightMotor",
+//                "frontRight",
+//                "rf",
+//                "rightFront"
+//            );
+//            DcMotor backLeftMotor = pickMotor(
+//                "backLeftWheel",
+//                "backLeftMotor",
+//                "backLeft",
+//                "lb",
+//                "leftBack"
+//            );
+//            DcMotor backRightMotor = pickMotor(
+//                "backRightWheel",
+//                "backRightMotor",
+//                "backRight",
+//                "rb",
+//                "rightBack"
+//            );
 
             // Approximate measurements from the CAD model (in inches).
             // The wheel circumference is 4 inches in diameter multiplied by π.
