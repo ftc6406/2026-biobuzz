@@ -61,6 +61,11 @@ public class MecanumWheels extends Wheels {
             backRightMotor = null;
         }
 
+        public DcMotor getFrontLeftMotor() {
+            return frontLeftMotor;
+
+        }
+
         /**
          * Set the motor that controls the front-left mecanum wheel.
          *
@@ -71,6 +76,11 @@ public class MecanumWheels extends Wheels {
         public Builder setFrontLeftMotor(DcMotor frontLeftMotor) {
             this.frontLeftMotor = frontLeftMotor;
             return this;
+        }
+
+        public DcMotor getFrontRightMotor() {
+            return frontRightMotor;
+
         }
 
         /**
@@ -85,6 +95,11 @@ public class MecanumWheels extends Wheels {
             return this;
         }
 
+        public DcMotor getBackLeftMotor() {
+            return backLeftMotor;
+
+        }
+
         /**
          * Set the motor that controls the back-right mecanum wheel.
          *
@@ -95,6 +110,11 @@ public class MecanumWheels extends Wheels {
         public Builder setBackLeftMotor(DcMotor backLeftMotor) {
             this.backLeftMotor = backLeftMotor;
             return this;
+        }
+
+        public DcMotor getBackRightMotor() {
+            return backRightMotor;
+
         }
 
         /**
@@ -109,6 +129,11 @@ public class MecanumWheels extends Wheels {
             return this;
         }
 
+        @Override
+        public double getLateralWheelDistance() {
+            return lateralWheelDistance;
+        }
+
         /**
          * {@inheritDoc}
          */
@@ -116,6 +141,12 @@ public class MecanumWheels extends Wheels {
         public Builder setLateralWheelDistance(double lateralWheelDistance) {
             this.lateralWheelDistance = lateralWheelDistance;
             return this;
+        }
+
+        @Override
+        public double getLongitudinalWheelDistance() {
+            return longitudinalWheelDistance;
+
         }
 
         /**

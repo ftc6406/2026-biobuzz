@@ -64,6 +64,8 @@ public abstract class Wheels {
             maxMotorPower = 1.0;
         }
 
+        public abstract double getLateralWheelDistance();
+
         /**
          * Set the {@link #lateralWheelDistance}
          *
@@ -78,6 +80,8 @@ public abstract class Wheels {
          */
         public abstract Builder setLateralWheelDistance(double lateralWheelDistance);
 
+        public abstract double getLongitudinalWheelDistance();
+
         /**
          * Set the {@link #longitudinalWheelDistance} property.
          *
@@ -91,6 +95,11 @@ public abstract class Wheels {
          * See {@link MecanumWheels.Builder} for an example.
          */
         public abstract Builder setLongitudinalWheelDistance(double longitudinalWheelDistance);
+
+        public double getTicksPerInch() {
+            return ticksPerInch;
+
+        }
 
         /**
          * Set the number of motor ticks per inches of distance
@@ -108,6 +117,11 @@ public abstract class Wheels {
         public Builder setTicksPerInch(double ticksPerInch) {
             this.ticksPerInch = ticksPerInch;
             return this;
+        }
+
+        public double getMaxMotorPower() {
+            return maxMotorPower;
+
         }
 
         /**
