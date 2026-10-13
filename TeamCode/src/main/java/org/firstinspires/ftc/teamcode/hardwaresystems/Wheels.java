@@ -144,7 +144,7 @@ public abstract class Wheels {
                    && longitudinalWheelDistance > 0.0
                    && ticksPerInch > 0.0
                    && maxMotorPower > 0.0
-                   && maxMotorPower < 1.0;
+                   && maxMotorPower <= 1.0;
         }
 
         /**

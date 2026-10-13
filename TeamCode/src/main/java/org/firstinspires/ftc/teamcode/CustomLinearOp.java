@@ -264,6 +264,12 @@ public class CustomLinearOp extends LinearOpMode {
             // Currently reports false
             telemetry.addLine("Is valid: " + builder.isValid());
 
+            telemetry.addLine("Front left null?: " + (builder.getFrontLeftMotor() == null));
+            telemetry.addLine("Front right null?: " + (builder.getFrontRightMotor() == null));
+            telemetry.addLine("Back left null?: " + (builder.getBackLeftMotor() == null));
+            telemetry.addLine("Back right null?: " + (builder.getBackRightMotor() == null));
+            telemetry.update();
+
             // TODO: Replace with the necessary constructor.
             WHEELS = builder.build();
 
