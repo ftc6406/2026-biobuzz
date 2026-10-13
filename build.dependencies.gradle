@@ -6,12 +6,20 @@ repositories {
 dependencies {
     implementation 'org.firstinspires.ftc:Inspection:12.0.0'
     implementation 'org.firstinspires.ftc:Blocks:12.0.0'
+<<<<<<< HEAD
     //noinspection Aligned16KB
+=======
+>>>>>>> c71d07a8d1145f201350a155e9b034d6d4d24871
     implementation 'org.firstinspires.ftc:RobotCore:12.0.0'
     implementation 'org.firstinspires.ftc:RobotServer:12.0.0'
     implementation 'org.firstinspires.ftc:OnBotJava:12.0.0'
     implementation 'org.firstinspires.ftc:Hardware:12.0.0'
     implementation 'org.firstinspires.ftc:FtcCommon:12.0.0'
     implementation 'org.firstinspires.ftc:Vision:12.0.0'
+<<<<<<< HEAD
     implementation 'androidx.appcompat:appcompat:1.8.0'
+=======
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+>>>>>>> c71d07a8d1145f201350a155e9b034d6d4d24871
 }
+
