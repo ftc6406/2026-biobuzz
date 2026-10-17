@@ -162,17 +162,17 @@ public class DriverMode extends CustomLinearOp {
      * values.
      */
     private ControlInput processInput() {
-        // Strafing (horizontal) comes from the triggers: right trigger (ZR)
-        // minus left trigger (ZL). Subtract horizontalOffset measured during
-        // init. Positive values strafe right, negative values strafe left.
-        double rawHorizontal = gamepad1.right_trigger - gamepad1.left_trigger;
+        // Strafing (horizontal) comes from the triggers: left trigger (ZL)
+        // minus right trigger (ZR). Subtract horizontalOffset measured during
+        // init. Positive values strafe left, negative values strafe right.
+        double rawHorizontal = gamepad1.left_trigger - gamepad1.right_trigger;
         double correctedHorizontal = (
-                                         gamepad1.right_trigger
-                                         - gamepad1.left_trigger
+                                         gamepad1.left_trigger
+                                         - gamepad1.right_trigger
                                      ) - horizontalOffset;
 
-        double rawVertical = -gamepad1.right_stick_y;
-        double correctedVertical = -gamepad1.right_stick_y - verticalOffset;
+        double rawVertical = gamepad1.right_stick_y;
+        double correctedVertical = gamepad1.right_stick_y - verticalOffset;
 
         // Turning (pivot) comes from the left stick X-axis.
         // Subtract pivotOffset measured during init.
@@ -295,7 +295,7 @@ public class DriverMode extends CustomLinearOp {
 
         } else {
             if (WHEELS != null) {
-                WHEELS.drive(result.vertical, result.horizontal, result.pivot);
+                WHEELS.drive(result.horizontal, result.vertical, result.pivot);
 
             } else if (MECANUM_DRIVE != null) {
                 /*
