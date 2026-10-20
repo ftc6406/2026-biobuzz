@@ -11,7 +11,7 @@ import java.util.HashMap;
 @TeleOp(name = "AutoConfigurator")
 public class ConfigurationUi extends OpMode {
     private static final String PATH = (
-            Environment.getExternalStorageDirectory().getAbsolutePath() + "/ftc/"
+        Environment.getExternalStorageDirectory().getAbsolutePath() + "/ftc/"
     );
 
     private static HashMap<Class<? extends BaseConfig>, ? extends BaseConfig> configs = new HashMap<>();
@@ -20,17 +20,12 @@ public class ConfigurationUi extends OpMode {
 //        configs.put(AllianceColor.class, null);
     }
 
-    public ConfigurationUi() {
-        
-
-    }
-
     private static boolean deleteConfig() {
-
+        
     }
 
     private static boolean saveConfig() {
-    
+        
 
     }
 
@@ -54,7 +49,7 @@ public class ConfigurationUi extends OpMode {
 
     @Override
     public void init() {
-
+        telemetry.addLine();
 
     }
 
