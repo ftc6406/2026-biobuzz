@@ -25,23 +25,23 @@ public class ConfigurationUi extends OpMode {
     }
 
     private static boolean saveConfig() {
-        
-
-    }
-
-    private static boolean loadConfig() throws IOException {
         FileOutputStream file = new FileInputStream(PATH);
         ObjectInputStream configStreamOut = new ObjectInputStream(file);
 
         configStreamOut.writeObject(configs);
         
         configStreamOut.close();
-        file.close();
+        file.close();        
+
+    }
+
+    private static boolean loadConfig() throws IOException {
+
 
     }
 
     public static BaseConfig readConfigs(Class<BaseConfig> configClass) {
-
+        
 
         return null;
 
