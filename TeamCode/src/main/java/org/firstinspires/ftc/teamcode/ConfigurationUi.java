@@ -24,7 +24,14 @@ public class ConfigurationUi extends OpMode {
         
     }
 
-    private static boolean saveConfig() {
+    private static setConfig(
+        Class<? extends BaseConfig> configKey
+        ? extends BaseConfig
+    ) {
+
+    }
+
+    private static void saveConfigFile() throws IOException{
         FileOutputStream file = new FileInputStream(PATH);
         ObjectInputStream configStreamOut = new ObjectInputStream(file);
 
@@ -35,15 +42,21 @@ public class ConfigurationUi extends OpMode {
 
     }
 
-    private static boolean loadConfig() throws IOException {
+    private static void loadConfigFile() throws IOException {
+        FileInputStream file = new FileInputStream(PATH);
+        ObjectInputStream configStreamIn = new ObjectInputStream(file);
 
+        configs = (
+            (HashMap<Class<? extends BaseConfig>, ? extends BaseConfig>) configStreamIn.readObject()
+        );
 
+        configStreamIn.close();
+        file.close();
+        
     }
 
     public static BaseConfig readConfigs(Class<BaseConfig> configClass) {
-        
-
-        return null;
+        return configs.get(configClass);
 
     }
 
